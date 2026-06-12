@@ -5,9 +5,7 @@ import time
 import os
 from dotenv import load_dotenv
 
-# -------------------------------
 # Configuration
-# -------------------------------
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -34,9 +32,7 @@ FEATURE_PLACEHOLDERS = {
     "Generate Flashcards": "Type anything to generate flashcards from your PDF...",
 }
 
-# -------------------------------
 # Page Config
-# -------------------------------
 st.set_page_config(
     page_title="AI Study Buddy",
     page_icon="📚",
@@ -46,9 +42,8 @@ st.set_page_config(
 st.title("📚 AI Study Buddy")
 st.caption("Ask questions, summarize notes, generate quizzes and flashcards.")
 
-# -------------------------------
 # Helper Functions
-# -------------------------------
+
 def extract_pdf_text(file) -> str:
     """Extract text from an uploaded PDF file object."""
     pdf = fitz.open(stream=file.read(), filetype="pdf")
@@ -141,9 +136,9 @@ def display_quiz(text: str):
         st.divider()
 
 
-# -------------------------------
+
 # Sidebar
-# -------------------------------
+
 with st.sidebar:
     st.header("📂 Study Tools")
 
@@ -163,9 +158,8 @@ with st.sidebar:
         st.session_state.pop("pdf_name", None)
         st.rerun()
 
-# -------------------------------
 # PDF Loading (cached by filename)
-# -------------------------------
+
 pdf_text = ""
 
 if uploaded_file:
@@ -186,9 +180,7 @@ needs_pdf = feature in ("Summarize Notes", "Generate Quiz", "Generate Flashcards
 if needs_pdf and not pdf_text:
     st.sidebar.warning("⚠️ Upload a PDF to use this feature.")
 
-# -------------------------------
 # Chat History Init
-# -------------------------------
 if "messages" not in st.session_state:
     st.session_state.messages = [{
         "role": "assistant",
@@ -202,9 +194,8 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# -------------------------------
 # Chat Input
-# -------------------------------
+
 placeholder_text = FEATURE_PLACEHOLDERS.get(feature, "Type here...")
 disabled = needs_pdf and not pdf_text
 
